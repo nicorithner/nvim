@@ -146,8 +146,26 @@ require("lazy").setup({
   -- bufferline
   {
     "akinsho/bufferline.nvim",
+    lazy = false,
     dependencies = "nvim-tree/nvim-web-devicons",
-    config = function() require("bufferline").setup({ options = { show_buffer_close_icons = false, show_close_icon = false } }) end,
+    config = function()
+      require("bufferline").setup({
+        options = {
+          mode = "buffers",  -- Show buffers, not tabs
+          show_buffer_close_icons = false,
+          show_close_icon = false,
+          always_show_bufferline = true,
+          offsets = {
+            {
+              filetype = "NvimTree",
+              text = "File Explorer",
+              text_align = "left",
+              separator = true,
+            },
+          },
+        },
+      })
+    end,
   },
 
   -- gitsigns

@@ -3,7 +3,16 @@ local map = vim.keymap.set
 -- Buffer navigation
 map("n", "<Tab>", ":bnext<CR>", { desc = "Next buffer" })
 map("n", "<S-Tab>", ":bprevious<CR>", { desc = "Previous buffer" })
-map("n", "<leader>bd", ":bp|bd #<CR>", { desc = "Close buffer" })
+map("n", "<leader>bd", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local buffers = vim.fn.getbufinfo({ buflisted = 1 })
+  
+  if #buffers > 1 then
+    vim.cmd("bp")
+  end
+  
+  vim.cmd("bd " .. bufnr)
+end, { desc = "Close buffer" })
 
 -- Telescope pickers
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files" })

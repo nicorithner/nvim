@@ -27,7 +27,10 @@ nvim_tree.setup({
   },
   git = { enable = true, ignore = false, timeout = 400 },
   actions = {
-    open_file = { resize_window = true },
+    open_file = { 
+      resize_window = true,
+      quit_on_open = false,  -- Don't close tree when opening a file
+    },
   },
   filters = { dotfiles = false, custom = { "node_modules" } },
 })
