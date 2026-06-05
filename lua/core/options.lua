@@ -1,9 +1,12 @@
 -- core/options.lua
 local o = vim.opt
 
+-- Add Mason bin to PATH so LSP servers can be found
+vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
+
 o.termguicolors = true
 o.number = true
-o.relativenumber = true
+-- o.relativenumber = true
 o.cursorline = true
 o.ignorecase = true
 o.smartcase = true
@@ -20,3 +23,49 @@ if not ok then
   -- Optionally you can set a fallback colorscheme here, e.g. "default" or another builtin theme.
   -- vim.cmd("colorscheme default")
 end
+
+-- Configure LSP floating windows with borders and padding
+local border = {
+  { "╭", "FloatBorder" },
+  { "─", "FloatBorder" },
+  { "╮", "FloatBorder" },
+  { "│", "FloatBorder" },
+  { "╯", "FloatBorder" },
+  { "─", "FloatBorder" },
+  { "╰", "FloatBorder" },
+  { "│", "FloatBorder" },
+}
+
+vim.lsp.handlers["textDocument/hover"] = function(...)
+  local bufnr, winnr = vim.lsp.handlers.hover(...)
+  if winnr then
+    vim.api.nvim_win_set_config(winnr, { border = border })
+  end
+end
+
+vim.lsp.handlers["textDocument/signatureHelp"] = function(...)
+  local bufnr, winnr = vim.lsp.handlers.signature_help(...)
+  if winnr then
+    vim.api.nvim_win_set_config(winnr, { border = border })
+  end
+end
+
+-- Diagnostic floating windows
+vim.diagnostic.config({
+  float = {
+    border = "rounded",
+  },
+})
+
+-- Custom highlight for floating windows (slate blue background)
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#3e4c5e", fg = "#c0caf5" })
+    vim.api.nvim_set_hl(0, "FloatBorder", { bg = "#3e4c5e", fg = "#7aa2f7" })
+  end,
+})
+
+-- Apply immediately if colorscheme is already loaded
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#3e4c5e", fg = "#c0caf5" })
+vim.api.nvim_set_hl(0, "FloatBorder", { bg = "#3e4c5e", fg = "#7aa2f7" })

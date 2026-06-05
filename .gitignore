@@ -1,0 +1,14 @@
+# Test files
+test*.cpp
+test*.js
+test*.sh
+
+# Backup files
+*.backup
+*.bak
+
+# LSP/diagnostic files
+check_lsp.lua
+
+# OS files
+.DS_Store
