@@ -2,7 +2,7 @@ local jdtls = require("jdtls")
 
 -- Get the jdtls install path from Mason
 local jdtls_path = vim.fn.stdpath("data") .. "/mason/packages/jdtls"
-local config_path = jdtls_path .. "/config_mac"
+local config_path = jdtls_path .. "/config_mac_arm"
 local plugins_path = jdtls_path .. "/plugins"
 local lombok_path = jdtls_path .. "/lombok.jar"
 
