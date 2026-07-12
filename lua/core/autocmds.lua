@@ -9,3 +9,13 @@ vim.api.nvim_create_autocmd("VimEnter", {
     nvim_tree_api.tree.open()
   end,
 })
+
+-- Suppress transient LSP errors during initialization
+local original_notify = vim.notify
+vim.notify = function(msg, level, opts)
+  -- Suppress "No client with id" errors during startup
+  if type(msg) == "string" and msg:match("No client with id") then
+    return
+  end
+  original_notify(msg, level, opts)
+end

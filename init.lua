@@ -21,7 +21,7 @@ vim.g.maplocalleader = " "
 
 -- Load plugins (lazy will install them)
 -- This must happen before we attempt to apply a colorscheme provided by a plugin.
-require("plugins")
+require("plugin-specs")
 
 -- Load configuration modules (options after plugins so colorscheme is available)
 require("core.options")

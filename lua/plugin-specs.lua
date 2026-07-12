@@ -1,4 +1,4 @@
--- plugins.lua (lazy.nvim plugin list)
+-- plugin-specs.lua (lazy.nvim plugin list)
 require("lazy").setup({
   -- utilities
   { "nvim-lua/plenary.nvim" },
@@ -21,14 +21,20 @@ require("lazy").setup({
     end,
   },
 
-  -- treesitter
+  -- treesitter (pinned to last version before tree-sitter CLI requirement)
   {
     "nvim-treesitter/nvim-treesitter",
+    commit = "cf12346a3414fa1b06af75c79faebe7f76df080a", -- Last known working commit
+    lazy = false,
     build = ":TSUpdate",
     config = function()
       require("nvim-treesitter.configs").setup({
         ensure_installed = { "javascript", "typescript", "tsx", "css", "scss", "html", "json", "bash", "lua", "java", "cpp", "python" },
-        highlight = { enable = true },
+        highlight = { 
+          enable = true,
+          additional_vim_regex_highlighting = false,
+        },
+        indent = { enable = true },
       })
     end,
   },
@@ -120,6 +126,12 @@ require("lazy").setup({
           ["ts_ls"] = function()
             require("lspconfig").ts_ls.setup({
               capabilities = capabilities,
+              single_file_support = true,
+              root_dir = function(fname)
+                local util = require("lspconfig.util")
+                return util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git")(fname)
+                  or util.path.dirname(fname)
+              end,
             })
           end,
           
@@ -141,6 +153,11 @@ require("lazy").setup({
               },
             })
           end,
+          
+          -- Skip jdtls - handled by ftplugin/java.lua
+          ["jdtls"] = function()
+            -- jdtls is configured in ftplugin/java.lua
+          end,
         })
       end
     end,
@@ -148,6 +165,10 @@ require("lazy").setup({
   {
     "neovim/nvim-lspconfig",
     lazy = false,
+  },
+  {
+    "mfussenegger/nvim-jdtls",
+    ft = "java",
   },
 
   -- none-ls (null-ls replacement)
@@ -396,6 +417,5 @@ require("lazy").setup({
       })
     end,
   },
-}, {
-  defaults = { lazy = true },
 })
+-- Removed lazy defaults - let individual plugin settings control loading
