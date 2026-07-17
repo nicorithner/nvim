@@ -21,20 +21,21 @@ require("lazy").setup({
     end,
   },
 
-  -- treesitter (pinned to last version before tree-sitter CLI requirement)
+  -- treesitter
   {
     "nvim-treesitter/nvim-treesitter",
-    commit = "cf12346a3414fa1b06af75c79faebe7f76df080a", -- Last known working commit
     lazy = false,
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = { "javascript", "typescript", "tsx", "css", "scss", "html", "json", "bash", "lua", "java", "cpp", "python" },
-        highlight = { 
-          enable = true,
-          additional_vim_regex_highlighting = false,
-        },
-        indent = { enable = true },
+      -- Modern nvim-treesitter setup (v0.12+)
+      require('nvim-treesitter').setup {
+        install_dir = vim.fn.stdpath('data') .. '/site'
+      }
+      
+      -- Install parsers
+      require('nvim-treesitter').install({
+        'javascript', 'typescript', 'tsx', 'css', 'scss', 
+        'html', 'json', 'bash', 'lua', 'java', 'cpp', 'python'
       })
     end,
   },
@@ -375,6 +376,14 @@ require("lazy").setup({
           theme = "auto",
           component_separators = "|",
           section_separators = { left = "", right = "" },
+        },
+        sections = {
+          lualine_a = {'mode'},
+          lualine_b = {'branch', 'diff', 'diagnostics'},
+          lualine_c = {'filename'},
+          lualine_x = {'encoding', 'fileformat', 'filetype'},
+          lualine_y = {'progress'},
+          lualine_z = {'location'}
         },
       })
     end,
