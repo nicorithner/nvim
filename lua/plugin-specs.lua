@@ -278,6 +278,7 @@ require("lazy").setup({
         sources = cmp.config.sources({
           { name = "nvim_lsp", priority = 1000, max_item_count = 15 },
           { name = "luasnip", priority = 750, max_item_count = 8 },
+          { name = "buffer", priority = 500, max_item_count = 8 },
           { name = "path", priority = 500, max_item_count = 5 },
         }),
         formatting = {
