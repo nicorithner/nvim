@@ -51,6 +51,17 @@ map("n", "<leader>fm", function()
 		else
 			print("Black not found")
 		end
+	-- For Ruby, use rubocop directly
+	elseif filetype == "ruby" then
+		local rubocop_path = vim.fn.stdpath("data") .. "/mason/bin/rubocop"
+		if vim.fn.executable(rubocop_path) == 1 then
+			local file = vim.fn.expand("%:p")
+			vim.fn.system(rubocop_path .. " --autocorrect " .. file)
+			vim.cmd("edit!") -- Reload the file
+			print("Formatted with rubocop")
+		else
+			print("Rubocop not found")
+		end
 	else
 		-- For other languages, try conform first, then LSP
 		local ok, conform = pcall(require, "conform")

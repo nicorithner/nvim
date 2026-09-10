@@ -35,7 +35,7 @@ require("lazy").setup({
       -- Install parsers
       require('nvim-treesitter').install({
         'javascript', 'typescript', 'tsx', 'css', 'scss', 
-        'html', 'json', 'bash', 'lua', 'java', 'cpp', 'python'
+        'html', 'json', 'bash', 'lua', 'java', 'cpp', 'python', 'ruby'
       })
     end,
   },
@@ -55,6 +55,7 @@ require("lazy").setup({
           "google-java-format",
           "clang-format",
           "black",
+          "rubocop",
         },
         auto_update = false,
         run_on_start = true,
